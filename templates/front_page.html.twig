@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Front page {% endblock %}
+
+{% block content %}
+
+
+    <h1 class="text-center" style="margin-top: 10vh;"> Blogs Project </h1>
+    <div class="front-container">
+{#        <img class="img-front-page" src="{{ asset('img/front-page-image.jpg') }} " alt="">#}
+        <div class="div-center">
+
+            <a class="btn btn-info border-white" href="{{ url('login')}}"> Log In </a>
+        </div>
+    </div>
+
+
+{% endblock %}

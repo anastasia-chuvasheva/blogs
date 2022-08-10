@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} New Blog! {% endblock %}
+
+{% block content %}
+    {% if form.vars.data is null %}
+        <h1> Write a new blog </h1>
+    {% else %}
+        <h1> Update a blog </h1>
+    {% endif %}
+    <br>
+    <div class="row">
+        <div class="col-lg-6 panel panel-default">
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                {{ form_row(form.titel) }}
+                {{ form_row(form.subtitel) }}
+                {{ form_row(form.text) }}
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

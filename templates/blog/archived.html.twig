@@ -3,14 +3,14 @@
 {% block title %} Blog page {% endblock %}
 
 {% block content %}
-    <h1> Show Blogs </h1>
-    <h2 style="font-size: 15px"> We have {{ blogs|length }} blogs on our site. </h2>
+    <h1> Show Archived Blogs </h1>
+    <h2 style="font-size: 15px"> We have {{ blogs|length }} blogs in the archive. </h2>
     <div class="container-fluid justify-content-start">
         <div class="row g-1">
             <div class="col-lg-6">
                 <ul class="list-group">
                     {% for blog in blogs %}
-                        {% if blog.active == 1 %}
+                        {% if blog.active == 0 %}
                             <li class="list-group-item" style="background-color: aliceblue">
                                 <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.titel }} </a>
                                 {% if app.user.isAdmin %}
@@ -18,18 +18,14 @@
                                        href="{{ path('blog_update', {'blog': blog.id}) }}">
                                         Update </a>
                                     <a class="btn btn-danger float-end border"
-                                       href="{{ path('blog_archive', {'blog': blog.id}) }}">
-                                        Archive </a>
+                                       href="{{ path('blog_return', {'blog': blog.id}) }}"> Return </a>
                                 {% endif %}
                             </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
                 <br>
-                {% if app.user.isAdmin %}
-                    <a class="btn btn-success" href="{{ path('blog_create') }}"> Create New </a>
-                    <a class="btn btn-dark float-end" href="{{ path('blogs_show_archived') }}"> Show Archived Blogs </a>
-                {% endif %}
+                <a href="{{ path('blogs_show_all') }}"> Go Back </a>
             </div>
         </div>
     </div>

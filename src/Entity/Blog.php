@@ -18,7 +18,7 @@ class Blog
     private ?string $titel = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $ondertitel = null;
+    private ?string $subtitel = null;
 
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $text = null;
@@ -31,6 +31,9 @@ class Blog
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imgExtra = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?bool $active = true;
 
 
     public function getId(): ?int
@@ -50,14 +53,14 @@ class Blog
         return $this;
     }
 
-    public function getOndertitel(): ?string
+    public function getSubtitel(): ?string
     {
-        return $this->ondertitel;
+        return $this->subtitel;
     }
 
-    public function setOndertitel(?string $ondertitel): self
+    public function setSubtitel(?string $subtitel): self
     {
-        $this->ondertitel = $ondertitel;
+        $this->subtitel = $subtitel;
 
         return $this;
     }
@@ -106,6 +109,18 @@ class Blog
     public function setImgExtra(?string $imgExtra): self
     {
         $this->imgExtra = $imgExtra;
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

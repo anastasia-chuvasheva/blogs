@@ -23,13 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
-    private Collection $roles;
-
-    public function __construct()
-    {
-        $this->roles = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Role $role = null;
 
     public function getId(): ?int
     {
@@ -60,37 +56,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getRoles(): array
-    {
-        $roleNames = [];
-        foreach ($this->roles as $role) {
-            $roleNames[] = $role->getName();
-        }
-        return $roleNames;
-    }
-
-    public function addRole(Role $role): self
-    {
-        if (!$this->roles->contains($role)) {
-            $this->roles->add($role);
-            $role->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Role $role): self
-    {
-        if ($this->roles->removeElement($role)) {
-            $role->removeUser($this);
-        }
-
-        return $this;
-    }
-
     public function eraseCredentials()
     {
 
@@ -101,4 +66,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getUsername();
 
     }
+
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(?Role $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getRoles(): array
+    {   $role = $this->role;
+        $roleNames[] = $role->getName();
+        return $roleNames;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        $role = $this->role;
+        if ($role->getId() === Role::ADMIN) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

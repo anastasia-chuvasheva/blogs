@@ -42,9 +42,9 @@ class BlogRepository extends ServiceEntityRepository
 //    /**
 //     * @return Blog[] Returns an array of Blog objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findByActive(int $active): array
 //    {
-//        return $this->createQueryBuilder('b')
+//        return $this->createQueryBuilder('')
 //            ->andWhere('b.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('b.id', 'ASC')

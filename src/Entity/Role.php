@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 class Role
 {
+    public const ADMIN = 1;
+    public const USER = 2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -18,7 +21,7 @@ class Role
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: User::class)]
     private Collection $users;
 
     public function __construct()
@@ -63,6 +66,29 @@ class Role
     public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+
+    public function addUsers(User $users): self
+    {
+        if (!$this->users->contains($users)) {
+            $this->users->add($users);
+            $users->setRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsers(User $users): self
+    {
+        if ($this->users->removeElement($users)) {
+            // set the owning side to null (unless already changed)
+            if ($users->getRole() === $this) {
+                $users->setRole(null);
+            }
+        }
 
         return $this;
     }
