@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} New Comment! {% endblock %}
+
+{% block content %}
+        <h1> Write a new comment </h1>
+    <br>
+    <div class="row">
+        <div class="col-lg-6 panel panel-default">
+            <div class="panel-body">
+               {{ form(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

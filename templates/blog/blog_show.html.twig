@@ -5,30 +5,53 @@
 {% block content %}
     <h1> Show a blog </h1>
     <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <img src="" class="card-img-top" alt="...">
-                        <h5 class="card-title"> {{ blog.titel }}</h5>
-                       <b> <h7> {{ blog.subtitel }}</h7></b>
-                        <br>
-                        <p class="card-text">
-                            {{ blog.text }}<br>
-                            <br>
-                            <i> Posted at {{ blog.publiceerdatum|date('Y-m-d H:i:s') }} </i>
-                            <br>
-                        </p>
-                        {% if app.user.isAdmin %}
-                        <a class="btn btn-primary float-end border" href="{{ path('blog_update', {'blog': blog.id}) }}"> Update </a>
-                        {% endif %}
-                    </div>
-
-                </div>
-
-                </div>
-            <a href="{{ path('blogs_show_all') }}"> Go Back </a>
+    {#    <div class="container-fluid"> #}
+    <div class="row">
+    <div class="col-lg-7">
+    <div>
+        <div class="card">
+            <div class="card-body">
+                <img src="" class="card-img-top" alt="...">
+                <h5 class="card-title"> {{ blog.titel }}</h5>
+                <b>
+                    <h7> {{ blog.subtitel }}</h7>
+                </b>
+                <br>
+                <p class="card-text">
+                    {{ blog.text }}<br>
+                    <br>
+                    <i> Posted at {{ blog.publiceerdatum|date('Y-m-d H:i:s') }} </i>
+                    <br>
+                </p>
+                {% if app.user.isAdmin %}
+                    <a class="btn btn-primary float-end border" href="{{ path('blog_update', {'blog': blog.id}) }}">
+                        Update </a>
+                {% endif %}
             </div>
         </div>
+    </div>
+    <div class="row justify-content-evenly">
+        <div class="col">
+            <ul class="list-group">
+                {% for comment in blog.comments %}
+                    <li class="list-group-item" style="background-color: ghostwhite">
+                        <div class="text-start">
+                            {{ comment.text }}<br>
+                        </div>
+                        <div class="text-end">
+                            <i> by {{ comment.user.username }} </i>
+                            <br>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="text-end m-1">
+            <a class="btn btn-success" href="{{ path('comment_create', {'blog': blog.id}) }}"> Add a Comment</a>
+        </div>
+        <br>
+        <div class="text-start">
+            <a href="{{ path('blogs_show_all') }}"> Go Back </a>
+        </div>
+    </div>
 {% endblock %}
