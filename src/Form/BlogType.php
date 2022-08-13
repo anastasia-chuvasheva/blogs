@@ -1,5 +1,6 @@
 <?php namespace App\Form;
 
+use App\Entity\Blog;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -23,7 +24,7 @@ class BlogType extends AbstractType
                     new NotBlank(),
                     new Length([
                         'min' => 3,
-                        'max' => 20
+                        'max' => 60
                     ])
                 ]
             ])
@@ -32,7 +33,7 @@ class BlogType extends AbstractType
                 'constraints' => [
                     new Length([
                         'min' => 3,
-                        'max' => 30
+                        'max' => 100
                     ])
                 ]
             ])
@@ -45,7 +46,7 @@ class BlogType extends AbstractType
                     new NotBlank(),
                     new Length([
                         'min' => 3,
-                        'max' => 200
+                        'max' => 500
                     ])
                 ]
             ])
@@ -56,6 +57,7 @@ class BlogType extends AbstractType
     {
         $resolver->setDefaults([
             'sanitize_html' => true,
+            'data_class' => Blog::class,
         ]);
     }
 

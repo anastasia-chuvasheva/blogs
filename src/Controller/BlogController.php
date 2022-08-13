@@ -1,10 +1,13 @@
 <?php namespace App\Controller;
 
 use App\Entity\Blog;
+use App\Event\BlogCreatedEvent;
 use App\Form\BlogType;
 use App\Repository\BlogRepository;
+use App\Service\SendingEmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,21 +36,23 @@ class BlogController extends AbstractController
     }
 
     #[Route('/create', name: 'blog_create')]
-    public function create(EntityManagerInterface $entityManager, Request $request): Response
+    public function create(EntityManagerInterface $entityManager, Request $request, EventDispatcherInterface $eventDispatcher): Response
     {
         $blog = new Blog();
+
         $form = $this->createForm(BlogType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $brand = $form->getData();
+            $blog = $form->getData();
 
             $entityManager->persist($blog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('blogs_show_all');
+            $eventDispatcher->dispatch(new BlogCreatedEvent($blog), BlogCreatedEvent::NAME);
 
+            return $this->redirectToRoute('blogs_show_all');
         }
 
         return $this->renderForm('blog/create.html.twig', [

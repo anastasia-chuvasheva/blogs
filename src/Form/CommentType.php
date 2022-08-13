@@ -18,16 +18,17 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', TextType::class, [
+            ->add('text', TextareaType::class, [
                 'attr' => [
-                    'class' => 'form-horizontal'
+                    'class' => 'form-horizontal',
+                    'rows' => 10,
                 ],
                 'label' => false,
                 'constraints' => [
                     new NotBlank(),
                     new Length([
                         'min' => 3,
-                        'max' => 20
+                        'max' => 100
                     ])
                 ]
             ])
