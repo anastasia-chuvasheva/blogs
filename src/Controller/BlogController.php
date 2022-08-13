@@ -6,6 +6,7 @@ use App\Form\BlogType;
 use App\Repository\BlogRepository;
 use App\Service\SendingEmailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +18,25 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BlogController extends AbstractController
 {
-    #[Route('/show-all', name: 'blogs_show_all')]
-    public function showAllBlogs(BlogRepository $blogRepository): Response
+    private const PAGINATION_LIMIT = 5;
+
+    #[Route('/show-all/{page}', name: 'blogs_show_all')]
+    public function showAllBlogs(BlogRepository $blogRepository, int $page = 1): Response
     {
-        $blogs = $blogRepository->findBy(['active'=>1],['id' => 'ASC']);
+        $paginator = new Paginator($blogRepository->findAllActiveQueryBuilder());
+
+        $pagesCount = ceil(count($paginator)/self::PAGINATION_LIMIT);
+
+        $blogs = $paginator
+            ->getQuery()
+            ->setFirstResult(self::PAGINATION_LIMIT * ($page-1))
+            ->setMaxResults(self::PAGINATION_LIMIT)
+            ->getResult();
 
         return $this->render('blog/index.html.twig', [
             'blogs' => $blogs,
+            'pagesCount' => $pagesCount,
+            'page' => $page,
         ]);
     }
 
@@ -50,7 +63,7 @@ class BlogController extends AbstractController
             $entityManager->persist($blog);
             $entityManager->flush();
 
-            $eventDispatcher->dispatch(new BlogCreatedEvent($blog), BlogCreatedEvent::NAME);
+//            $eventDispatcher->dispatch(new BlogCreatedEvent($blog), BlogCreatedEvent::NAME);
 
             return $this->redirectToRoute('blogs_show_all');
         }
@@ -105,13 +118,23 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('blogs_show_archived');
     }
 
-    #[Route('/show-archived', name: 'blogs_show_archived')]
-    public function showArchived(BlogRepository $blogRepository): Response
+    #[Route('/show-archived/{page}', name: 'blogs_show_archived')]
+    public function showArchived(BlogRepository $blogRepository, int $page = 1): Response
     {
-        $blogs = $blogRepository->findBy(['active'=>0],['id' => 'ASC']);
+        $paginator = new Paginator($blogRepository->findAllNotActiveQueryBuilder());
+
+        $pagesCount = ceil(count($paginator)/self::PAGINATION_LIMIT);
+
+        $blogs = $paginator
+            ->getQuery()
+            ->setFirstResult(self::PAGINATION_LIMIT * ($page-1))
+            ->setMaxResults(self::PAGINATION_LIMIT)
+            ->getResult();
 
         return $this->render('blog/archived.html.twig', [
             'blogs' => $blogs,
+            'pagesCount' => $pagesCount,
+            'page' => $page,
         ]);
     }
 }

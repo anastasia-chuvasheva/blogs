@@ -15,7 +15,7 @@
                                 <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.titel }} </a>
                                 <br>
                                 ({{ blog.comments|length }} comments)
-                                    {% if app.user.isAdmin %}
+                                {% if app.user.isAdmin %}
                                     <a class="btn btn-primary float-end border"
                                        href="{{ path('blog_update', {'blog': blog.id}) }}">
                                         Update </a>
@@ -28,6 +28,25 @@
                     {% endfor %}
                 </ul>
                 <br>
+
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item {% if page == 1 %} disabled {% endif %}">
+                            <a class="page-link" href="{{ path('blogs_show_all', {"page": page-1}) }}">Previous</a>
+                        </li>
+
+                        {% for index in range(1, pagesCount) %}
+                            <li class="page-item {% if index == page %} active {% endif %}">
+                                <a class="page-link" href="{{ path('blogs_show_all', {"page": index}) }}">{{ index }}</a>
+                            </li>
+                        {% endfor %}
+
+                        <li class="page-item {% if page == pagesCount %} disabled {% endif %}">
+                            <a class="page-link" href="{{ path('blogs_show_all', {"page": page+1}) }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
                 {% if app.user.isAdmin %}
                     <a class="btn btn-success" href="{{ path('blog_create') }}"> Create New </a>
                     <a class="btn btn-dark float-end" href="{{ path('blogs_show_archived') }}"> Show Archived Blogs </a>

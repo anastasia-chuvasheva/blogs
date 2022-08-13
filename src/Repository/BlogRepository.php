@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Blog;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,20 @@ class BlogRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findAllActiveQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('blog')
+            ->where('blog.active = :active')
+            ->setParameter('active', true);
+    }
+
+    public function findAllNotActiveQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('blog')
+            ->where('blog.active = :active')
+            ->setParameter('active', false);
     }
 
 //    /**

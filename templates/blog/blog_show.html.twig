@@ -11,7 +11,9 @@
     <div>
         <div class="card">
             <div class="card-body">
+                {% if blog.imgExtra != NULL %}
                 <img src="" class="card-img-top" alt="...">
+                {% endif %}
                 <h5 class="card-title"> {{ blog.titel }}</h5>
                 <b>
                     <h7> {{ blog.subtitel }}</h7>
