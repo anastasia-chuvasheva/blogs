@@ -10,24 +10,28 @@
             <div class="col-lg-7">
                 <ul class="list-group">
                     {% for blog in blogs %}
-                            <li class="list-group-item" style="background-color: aliceblue">
-                                {% if blog.img is not null %}
-                                    <div class="img">
+                        <li class="list-group-item" style="background-color: aliceblue">
+                            {% if blog.img is not null %}
+                                <div class="img">
                                     <img src="{{ asset('uploads/images/' ~ blog.img) }}" class="card-img-top" alt="...">
-                                    </div>
-                                {% endif %}
-                                <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
-                                <br>
+                                </div>
+                            {% endif %}
+                            <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
+                            <br>
+                            {% if blog.comments|length == 1 %}
+                                ({{ blog.comments|length }} comment)
+                            {% else %}
                                 ({{ blog.comments|length }} comments)
-                                {% if app.user.isAdmin %}
-                                    <a class="btn btn-primary float-end border"
-                                       href="{{ path('blog_update', {'blog': blog.id}) }}">
-                                        Update </a>
-                                    <a class="btn btn-danger float-end border"
-                                       href="{{ path('blog_archive', {'blog': blog.id}) }}">
-                                        Archive </a>
-                                {% endif %}
-                            </li>
+                            {% endif %}
+                            {% if app.user.isAdmin %}
+                                <a class="btn btn-primary float-end border"
+                                   href="{{ path('blog_update', {'blog': blog.id}) }}">
+                                    Update </a>
+                                <a class="btn btn-danger float-end border"
+                                   href="{{ path('blog_archive', {'blog': blog.id}) }}">
+                                    Archive </a>
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
                 <br>
@@ -40,7 +44,8 @@
 
                         {% for index in range(1, pagesCount) %}
                             <li class="page-item {% if index == page %} active {% endif %}">
-                                <a class="page-link" href="{{ path('blogs_show_all', {"page": index}) }}">{{ index }}</a>
+                                <a class="page-link"
+                                   href="{{ path('blogs_show_all', {"page": index}) }}">{{ index }}</a>
                             </li>
                         {% endfor %}
 
@@ -56,7 +61,7 @@
                     <br>
                 {% endif %}
                 <div class="text-end">
-                <a href="{{ path('app_logout') }}"> Log out </a>
+                    <a href="{{ path('app_logout') }}"> Log out </a>
                 </div>
             </div>
         </div>

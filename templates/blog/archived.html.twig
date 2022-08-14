@@ -18,7 +18,11 @@
                                 {% endif %}
                                 <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
                                 <br>
-                                ({{ blog.comments|length }} comments)
+                                {% if blog.comments|length == 1 %}
+                                    ({{ blog.comments|length }} comment)
+                                {% else %}
+                                    ({{ blog.comments|length }} comments)
+                                {% endif %}
                                 {% if app.user.isAdmin %}
                                     <a class="btn btn-primary float-end border"
                                        href="{{ path('blog_update', {'blog': blog.id}) }}">
