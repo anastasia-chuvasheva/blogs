@@ -9,7 +9,7 @@ Emails are sent through mailjet.com and include a link to the new post.<br>
 This project is made with Symfony 6.1, styled with Boostrap and has all of the necessary functionality specified in the task.<br>
 Extra functionality includes: <br>
 <ul>
- <li>admin functionality with the security component and authentification<br></li>
+ <li>admin functionality uses the security component and authentification<br></li>
  <li>pagination<br></li>
  <li>comments (unchangeable like in the Twitter of old)<br></li>
  <li>a page for viewing archived posts and a button to republish them<br></li>
