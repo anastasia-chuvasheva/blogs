@@ -1,17 +1,14 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController extends AbstractController
+class IndexPageController extends AbstractController
 {
     #[Route('/', name: 'front_page')]
     public function index(): Response
     {
         return $this->render('front_page.html.twig');
     }
-
 }

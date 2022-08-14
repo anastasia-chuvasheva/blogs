@@ -13,9 +13,6 @@ class BlogCreatedSubscriber implements EventSubscriberInterface
         $this->sendingEmailService = $sendingEmailService;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -23,11 +20,6 @@ class BlogCreatedSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param BlogCreatedEvent $createdEvent
-     *
-     * @return void
-     */
     public function blogCreated(BlogCreatedEvent $createdEvent): void
     {
         $blog = $createdEvent->getBlog();

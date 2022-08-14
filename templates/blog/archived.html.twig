@@ -4,34 +4,35 @@
 
 {% block content %}
     <h1> Show Archived Blogs </h1>
-    <h2 style="font-size: 15px"> We have {{ blogs|length }} blogs in the archive. </h2>
+    <h2 style="font-size: 15px"> We have {{ postsAmount }} blogs in the archive. </h2>
     <div class="container-fluid justify-content-start">
         <div class="row g-1">
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <ul class="list-group">
                     {% for blog in blogs %}
-                        {% if blog.active == 0 %}
                             <li class="list-group-item" style="background-color: aliceblue">
-                                <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.titel }} </a>
+                                {% if blog.img is not null %}
+                                    <div class="img">
+                                        <img src="{{ asset('uploads/images/' ~ blog.img) }}" class="card-img-top" alt="...">
+                                    </div>
+                                {% endif %}
+                                <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
                                 {% if app.user.isAdmin %}
                                     <a class="btn btn-primary float-end border"
                                        href="{{ path('blog_update', {'blog': blog.id}) }}">
                                         Update </a>
-                                    <a class="btn btn-danger float-end border"
-                                       href="{{ path('blog_return', {'blog': blog.id}) }}"> Return </a>
+                                    <a class="btn btn-success float-end border"
+                                       href="{{ path('blog_return', {'blog': blog.id}) }}"> Republish </a>
                                 {% endif %}
                             </li>
-                        {% endif %}
                     {% endfor %}
                 </ul>
                 <br>
-
                 <nav>
                     <ul class="pagination">
                         <li class="page-item {% if page == 1 %} disabled {% endif %}">
                             <a class="page-link" href="{{ path('blogs_show_archived', {"page": page-1}) }}">Previous</a>
                         </li>
-
                         {% for index in range(1, pagesCount) %}
                             <li class="page-item {% if index == page %} active {% endif %}">
                                 <a class="page-link" href="{{ path('blogs_show_archived', {"page": index}) }}">{{ index }}</a>
@@ -48,5 +49,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}

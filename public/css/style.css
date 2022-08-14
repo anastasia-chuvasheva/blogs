@@ -27,3 +27,18 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+
+.img-extra {
+    width: 400px;
+    height: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img {
+    width: 80px;
+    height: 80px;
+    float: left;
+    margin: 0px 5px 0px -10px;
+}

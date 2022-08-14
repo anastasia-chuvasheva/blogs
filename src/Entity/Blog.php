@@ -1,8 +1,7 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use App\Repository\BlogRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -13,25 +12,25 @@ class Blog
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $titel = null;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $subtitel = null;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $subtitle = null;
 
-    #[ORM\Column(length: 500, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 500, nullable: true)]
     private ?string $text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $publiceerdatum = null;
+    private ?DateTime $publishDate = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $img = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $imgExtra = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -50,26 +49,26 @@ class Blog
         return $this->id;
     }
 
-    public function getTitel(): ?string
+    public function getTitle(): ?string
     {
-        return $this->titel;
+        return $this->title;
     }
 
-    public function setTitel(string $titel): self
+    public function setTitle(string $title): self
     {
-        $this->titel = $titel;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getSubtitel(): ?string
+    public function getSubTitle(): ?string
     {
-        return $this->subtitel;
+        return $this->subtitle;
     }
 
-    public function setSubtitel(?string $subtitel): self
+    public function setSubTitle(?string $subtitle): self
     {
-        $this->subtitel = $subtitel;
+        $this->subtitle = $subtitle;
 
         return $this;
     }
@@ -86,14 +85,14 @@ class Blog
         return $this;
     }
 
-    public function getPubliceerdatum(): ?\DateTimeInterface
+    public function getPublishDate(): ?DateTime
     {
-        return $this->publiceerdatum;
+        return $this->publishDate;
     }
 
-    public function setPubliceerdatum(\DateTimeInterface $publiceerdatum): self
+    public function setPublishDate(DateTime $publishDate): self
     {
-        $this->publiceerdatum = $publiceerdatum;
+        $this->publishDate = $publishDate;
 
         return $this;
     }
@@ -155,7 +154,6 @@ class Blog
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
             if ($comment->getBlog() === $this) {
                 $comment->setBlog(null);
             }

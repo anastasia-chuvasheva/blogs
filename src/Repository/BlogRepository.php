@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Repository;
+<?php namespace App\Repository;
 
 use App\Entity\Blog;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -42,40 +40,17 @@ class BlogRepository extends ServiceEntityRepository
 
     public function findAllActiveQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('blog')
+        return $this
+            ->createQueryBuilder('blog')
             ->where('blog.active = :active')
             ->setParameter('active', true);
     }
 
     public function findAllNotActiveQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('blog')
+        return $this
+            ->createQueryBuilder('blog')
             ->where('blog.active = :active')
             ->setParameter('active', false);
     }
-
-//    /**
-//     * @return Blog[] Returns an array of Blog objects
-//     */
-//    public function findByActive(int $active): array
-//    {
-//        return $this->createQueryBuilder('')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Blog
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

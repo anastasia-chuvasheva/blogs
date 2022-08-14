@@ -7,22 +7,13 @@ class BlogCreatedEvent extends Event
 {
     public const NAME = 'blog.created';
 
-    /**
-     * @var Blog
-     */
-    private $blog;
+    private Blog $blog;
 
-    /**
-     * @param Blog $blog
-     */
     public function __construct(Blog $blog)
     {
         $this->blog = $blog;
     }
 
-    /**
-     * @return Blog
-     */
     public function getBlog(): Blog
     {
         return $this->blog;

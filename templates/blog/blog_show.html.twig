@@ -5,24 +5,25 @@
 {% block content %}
     <h1> Show a blog </h1>
     <br>
-    {#    <div class="container-fluid"> #}
     <div class="row">
     <div class="col-lg-7">
     <div>
         <div class="card">
             <div class="card-body">
-                {% if blog.imgExtra != NULL %}
-                <img src="" class="card-img-top" alt="...">
+                {% if blog.imgExtra is not null %}
+                    <div class="img-extra">
+                        <img src="{{ asset('uploads/images/' ~ blog.imgExtra) }}" class="card-img-top" alt="...">
+                    </div>
                 {% endif %}
-                <h5 class="card-title"> {{ blog.titel }}</h5>
+                    <h5 class="card-title"> {{ blog.title }}</h5>
                 <b>
-                    <h7> {{ blog.subtitel }}</h7>
+                    <h7> {{ blog.subtitle }}</h7>
                 </b>
                 <br>
                 <p class="card-text">
                     {{ blog.text }}<br>
                     <br>
-                    <i> Posted at {{ blog.publiceerdatum|date('Y-m-d H:i:s') }} </i>
+                    <i> Posted at {{ blog.publishDate|date('Y-m-d H:i:s') }} </i>
                     <br>
                 </p>
                 {% if app.user.isAdmin %}

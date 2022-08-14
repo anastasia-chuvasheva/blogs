@@ -1,11 +1,7 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use App\Entity\Blog;
-use App\Entity\Comment;
 use App\Form\CommentType;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,17 +14,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     #[Route('/create/{blog}', name: 'comment_create')]
-    public function create(EntityManagerInterface $entityManager, Request $request, Blog $blog, UserRepository $userRepository): Response
+    public function create(EntityManagerInterface $entityManager, Request $request, Blog $blog): Response
     {
-
         $form = $this->createForm(CommentType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment = $form->getData();
+
             $comment->setBlog($blog);
             $comment->setUser($this->getUser());
+
             $entityManager->persist($comment);
             $entityManager->flush();
 

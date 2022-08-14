@@ -4,15 +4,19 @@
 
 {% block content %}
     <h1> Show Blogs </h1>
-    <h2 style="font-size: 15px"> We have {{ blogs|length }} blogs on our site. </h2>
+    <h2 style="font-size: 15px"> We have {{ postsAmount }} blogs on our site. </h2>
     <div class="container-fluid justify-content-start">
         <div class="row">
             <div class="col-lg-7">
                 <ul class="list-group">
                     {% for blog in blogs %}
-                        {% if blog.active == 1 %}
                             <li class="list-group-item" style="background-color: aliceblue">
-                                <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.titel }} </a>
+                                {% if blog.img is not null %}
+                                    <div class="img">
+                                    <img src="{{ asset('uploads/images/' ~ blog.img) }}" class="card-img-top" alt="...">
+                                    </div>
+                                {% endif %}
+                                <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
                                 <br>
                                 ({{ blog.comments|length }} comments)
                                 {% if app.user.isAdmin %}
@@ -24,7 +28,6 @@
                                         Archive </a>
                                 {% endif %}
                             </li>
-                        {% endif %}
                     {% endfor %}
                 </ul>
                 <br>
@@ -50,7 +53,11 @@
                 {% if app.user.isAdmin %}
                     <a class="btn btn-success" href="{{ path('blog_create') }}"> Create New </a>
                     <a class="btn btn-dark float-end" href="{{ path('blogs_show_archived') }}"> Show Archived Blogs </a>
+                    <br>
                 {% endif %}
+                <div class="text-end">
+                <a href="{{ path('app_logout') }}"> Log out </a>
+                </div>
             </div>
         </div>
     </div>
