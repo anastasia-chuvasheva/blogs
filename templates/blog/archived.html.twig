@@ -17,6 +17,8 @@
                                     </div>
                                 {% endif %}
                                 <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
+                                <br>
+                                ({{ blog.comments|length }} comments)
                                 {% if app.user.isAdmin %}
                                     <a class="btn btn-primary float-end border"
                                        href="{{ path('blog_update', {'blog': blog.id}) }}">
