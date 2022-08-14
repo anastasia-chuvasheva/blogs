@@ -1,10 +1,12 @@
 <?php namespace App\Controller;
 
 use App\Entity\Blog;
+use App\Entity\User;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -38,8 +40,15 @@ class BlogController extends AbstractController
     }
 
     #[Route('/show/{blog}', name: 'blog_show')]
-    public function showBlog(Blog $blog, BlogRepository $blogRepository): Response
+    public function showBlog(Blog $blog): Response
     {
+        /** @var  User $user */
+        $user = $this->getUser();
+
+        if (!$blog->isActive() && !$user->isAdmin()) {
+
+            throw new NotFoundHttpException();
+        }
         return $this->render('blog/blog_show.html.twig', [
             'blog' => $blog,
         ]);
