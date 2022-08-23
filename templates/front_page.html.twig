@@ -3,10 +3,17 @@
 {% block title %} Front page {% endblock %}
 
 {% block content %}
-    <h1 class="text-center display-4" style="margin-top: 10vh;"> Blogs Project </h1>
+    <h1 id="name" class="text-center display-4" style="margin-top: 10vh;"> Blogs Project </h1>
     <div class="front-container">
         <div class="div-center">
-            <a class="btn btn-info border-white" href="{{ url('login') }}"> Log In </a>
+            <a id="btn" class="btn btn-info border-white"> Log In </a>
+            <script>
+                $("#btn").click(function() {
+                    $( "#name, #btn" ).fadeOut(500, function(){
+                        window.location.assign('login');
+                    });
+                });
+            </script>
         </div>
     </div>
 {% endblock %}

@@ -1,24 +1,48 @@
 {% extends "base.html.twig" %}
 {% block title %} Sign In Form {% endblock %}
 {% block content %}
+    <script>
+        $(document).ready(function() {
+            $('.fadeIn').each(function(fadeInDiv){
+                $(this).delay(fadeInDiv * 500).fadeIn(1000);
+            });
+
+        });
+
+        let viewPwd = false;
+        function changePwdView(){
+            let getPwdView = $('#password');
+            if (viewPwd === false) {
+                getPwdView.attr("type", "text");
+                viewPwd = true;
+            }
+            else if (viewPwd === true) {
+                getPwdView.attr("type", "password");
+                viewPwd = false;
+            }
+        }
+    </script>
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
     <div class="text-center">
+        <div class="fadeIn">
         <h1> Log in form </h1>
-        <form action="{{ path('login') }}" method="post">
+        </div>
+    <div class="fadeIn">
+    <form action="{{ path('login') }}" method="post">
             <br>
-
             <label for="username">Email:</label>
             <input type="text" id="username" name="_username" value="{{ last_username }}"/>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="_password"/>
-
+            <button class="btn-secondary" onclick="changePwdView()" type="button"> View/hide </button>
             <input type="hidden" name="_target_path" value="{{ path('blogs_show_all') }}"/>
 
             <button type="submit" class="btn btn-primary">Log in</button>
         </form>
+    </div>
     </div>
     <br>
 {% endblock %}

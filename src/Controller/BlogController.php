@@ -35,7 +35,6 @@ class BlogController extends AbstractController
             'pagesCount' => $pagesCount,
             'page' => $page,
             'postsAmount' => $postsAmount,
-
         ]);
     }
 

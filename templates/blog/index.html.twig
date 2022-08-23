@@ -3,6 +3,11 @@
 {% block title %} Blog page {% endblock %}
 
 {% block content %}
+    <script>
+        $(document).ready(function() {
+            $('.list-group').fadeIn(500);
+            });
+    </script>
     <h1> Show Blogs </h1>
     <h2 style="font-size: 15px"> We have {{ postsAmount }} blogs on our site. </h2>
     <div class="container-fluid justify-content-start">
