@@ -1,7 +1,9 @@
 <?php namespace App\Repository;
 
+use App\Entity\Blog;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -35,5 +37,18 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function loadComments(int $offset, Blog $blog): array
+    {
+        $qb = $this->createQueryBuilder('comment')
+            ->where('comment.blog = :blog')
+            ->orderBy('comment.id')
+            ->setMaxResults($offset)
+            ->setParameter('blog', $blog);
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
     }
 }

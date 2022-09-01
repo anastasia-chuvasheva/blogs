@@ -12,10 +12,11 @@
             <div class="card-body">
                 {% if blog.imgExtra is not null %}
                     <div class="img-extra">
-                        <img src="{{ asset('uploads/images/' ~ blog.imgExtra) }}" class="card-img-top" alt="...">
+                        <img src="{{ asset('uploads/images/' ~ blog.imgExtra) }}" class="card-img-top"
+                             alt="...">
                     </div>
                 {% endif %}
-                    <h5 class="card-title"> {{ blog.title }}</h5>
+                <h5 class="card-title"> {{ blog.title }}</h5>
                 <b>
                     <h7> {{ blog.subtitle }}</h7>
                 </b>
@@ -27,7 +28,8 @@
                     <br>
                 </p>
                 {% if app.user.isAdmin %}
-                    <a class="btn btn-primary float-end border" href="{{ path('blog_update', {'blog': blog.id}) }}">
+                    <a class="btn btn-primary float-end border"
+                       href="{{ path('blog_update', {'blog': blog.id}) }}">
                         Update </a>
                 {% endif %}
             </div>
@@ -35,19 +37,14 @@
     </div>
     <div class="row justify-content-evenly">
         <div class="col">
-            <ul class="list-group">
-                {% for comment in blog.comments %}
-                    <li class="list-group-item" style="background-color: ghostwhite">
-                        <div class="text-start">
-                            {{ comment.text }}<br>
-                        </div>
-                        <div class="text-end">
-                            <i> by {{ comment.user.username }} </i>
-                            <br>
-                        </div>
-                    </li>
-                {% endfor %}
+            <ul id="list" class="list-group">
+
             </ul>
+        </div>
+        <div class="text-end m-1">
+            <button id="btn" class="btn btn-dark" href="{{ path('blog_show', {'blog': blog.id}) }}">Show More
+                Comments
+            </button>
         </div>
         <div class="text-end m-1">
             <a class="btn btn-success" href="{{ path('comment_create', {'blog': blog.id}) }}"> Add a Comment</a>
@@ -57,4 +54,27 @@
             <a href="{{ path('blogs_show_all') }}"> Go Back </a>
         </div>
     </div>
+    <script>
+        let offset = 0;
+        let blog = {{ blog.id }};
+        offset += 2;
+        $('#list').load('http://localhost:8000/comment/retrieve-comments/' + blog + '/' + offset, null, function () {
+            let firstTotal = $("li").length;
+            if (firstTotal === 0) {
+                $('#list').append('<div class="text-center m-1"> No comments </div>');
+                $("#btn").hide();
+            }
+        });
+
+        $("#btn").click(function () {
+            offset += 2;
+            $('#list').load('http://localhost:8000/comment/retrieve-comments/' + blog + '/' + offset, null, function () {
+                let total = $("li").length;
+                if (total < offset) {
+                    $('#list').append('<div class="text-center m-1"> No more comments </div>');
+                    $("#btn").attr('disabled', true);
+                }
+            });
+        });
+    </script>
 {% endblock %}

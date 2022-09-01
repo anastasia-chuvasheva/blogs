@@ -21,7 +21,12 @@ class BlogController extends AbstractController
     public const PAGINATION_LIMIT = 5;
 
     #[Route('/create', name: 'blog_create')]
-    public function create(EntityManagerInterface $entityManager, Request $request, EventDispatcherInterface $eventDispatcher, FileManager $fileManager): Response
+    public function create(
+        EntityManagerInterface   $entityManager,
+        Request                  $request,
+        EventDispatcherInterface $eventDispatcher,
+        FileManager              $fileManager
+    ): Response
     {
         $blog = new Blog();
 
@@ -36,7 +41,7 @@ class BlogController extends AbstractController
             $extraImage = $form->get('extraImage')->getData();
 
             if ($image) {
-              $newFilename = $fileManager->handleFile($image);
+                $newFilename = $fileManager->handleFile($image);
                 $blog->setImg($newFilename);
             }
 
@@ -120,12 +125,12 @@ class BlogController extends AbstractController
     {
         $paginator = new Paginator($blogRepository->findAllNotActiveQueryBuilder());
 
-        $pagesCount = ceil(count($paginator)/self::PAGINATION_LIMIT);
+        $pagesCount = ceil(count($paginator) / self::PAGINATION_LIMIT);
         $postsAmount = count($paginator);
 
         $blogs = $paginator
             ->getQuery()
-            ->setFirstResult(self::PAGINATION_LIMIT * ($page-1))
+            ->setFirstResult(self::PAGINATION_LIMIT * ($page - 1))
             ->setMaxResults(self::PAGINATION_LIMIT)
             ->getResult();
 

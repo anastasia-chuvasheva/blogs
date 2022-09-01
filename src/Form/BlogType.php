@@ -41,9 +41,9 @@ class BlogType extends AbstractType
             ])
             ->add('text', TextareaType::class, [
                 'label' => 'Text',
-            'attr' => [
-                'rows' => 10,
-            ],
+                'attr' => [
+                    'rows' => 10,
+                ],
                 'constraints' => [
                     new NotBlank(),
                     new Length([

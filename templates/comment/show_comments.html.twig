@@ -1,0 +1,11 @@
+{% for comment in comments %}
+    <li class="list-group-item" style="background-color: ghostwhite">
+        <div class="text-start">
+            {{ comment.text }}<br>
+        </div>
+        <div class="text-end">
+            <i> by {{ comment.user.username }} </i>
+            <br>
+        </div>
+    </li>
+{% endfor %}
