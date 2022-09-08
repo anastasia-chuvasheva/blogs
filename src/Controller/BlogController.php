@@ -2,9 +2,11 @@
 
 use App\Entity\Blog;
 use App\Entity\User;
+use App\Form\SearchType;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +19,9 @@ class BlogController extends AbstractController
     private const PAGINATION_LIMIT = 5;
 
     #[Route('/show-all/{page}', name: 'blogs_show_all')]
-    public function showAllBlogs(BlogRepository $blogRepository, int $page = 1): Response
+    public function showAllBlogs(BlogRepository $blogRepository, Request $request, int $page = 1): Response
     {
         $paginator = new Paginator($blogRepository->findAllActiveQueryBuilder());
-
         $pagesCount = ceil(count($paginator)/self::PAGINATION_LIMIT);
         $postsAmount = count($paginator);
 
@@ -52,4 +53,15 @@ class BlogController extends AbstractController
             'blog' => $blog,
         ]);
     }
+
+    #[Route('/find-blogs/{title}', name: 'find_blogs')]
+    public function findBlogs(BlogRepository $blogRepository, string $title): Response
+    {
+        $blogs= $blogRepository->findBlogsByName($title);
+
+        return $this->render('blog/search.html.twig', [
+            'blogs' => $blogs,
+        ]);
+    }
+
 }

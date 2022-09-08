@@ -3,6 +3,15 @@
 {% block title %} Blog page {% endblock %}
 
 {% block content %}
+    <script>
+        $(document).ready(function() {
+            $('.list-group').fadeIn(500);
+        });
+        $(document).ready(function() {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+        });
+    </script>
     <h1> Show Archived Blogs </h1>
     <h2 style="font-size: 15px"> We have {{ postsAmount }} blogs in the archive. </h2>
     <div class="container-fluid justify-content-start">
@@ -16,7 +25,7 @@
                                         <img src="{{ asset('uploads/images/' ~ blog.img) }}" class="card-img-top" alt="...">
                                     </div>
                                 {% endif %}
-                                <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
+                                <a href="{{ path('blog_show', {'blog': blog.id}) }}" data-bs-toggle="tooltip" data-bs-title="{{ blog.subtitle }}" data-bs-placement="right" > {{ blog.title }} </a>
                                 <br>
                                 {% if blog.comments|length == 1 %}
                                     ({{ blog.comments|length }} comment)

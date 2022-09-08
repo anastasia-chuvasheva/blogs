@@ -53,4 +53,15 @@ class BlogRepository extends ServiceEntityRepository
             ->where('blog.active = :active')
             ->setParameter('active', false);
     }
+
+    public function findBlogsByName(string $piece): array
+    {
+        $qb = $this->createQueryBuilder('blog')
+            ->where('blog.title LIKE :piece')
+            ->setParameter('piece', "%$piece%");
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
 }

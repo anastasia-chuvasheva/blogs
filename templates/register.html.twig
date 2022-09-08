@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+{% block title %} Sign Up Form {% endblock %}
+{% block content %}
+    <script>
+        $(document).ready(function () {
+            $('.fadeIn').each(function (fadeInDiv) {
+                $(this).delay(fadeInDiv * 500).fadeIn(1000);
+            });
+
+        });
+
+        // let viewPwd = false;
+        //
+        // function changePwdView() {
+        //     let getPwdView = $('#register_password');
+        //     if (viewPwd === false) {
+        //         getPwdView.attr("type", "text");
+        //         viewPwd = true;
+        //     } else if (viewPwd === true) {
+        //         getPwdView.attr("type", "password");
+        //         viewPwd = false;
+        //     }
+        // }
+    </script>
+
+    <h1 class="text-center"> Register form </h1>
+    <div class="fadeIn">
+        <form action="{{ path('user_register') }}" method="post">
+            <div class="p-3 mb-3">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="input-group mb-3">
+                    {{ form_widget(form.username, {'attr': {'class': 'form-control block mt-1 w-full'}}) }}
+                    {{ form_errors(form.username) }}
+                </div>
+                <div id="username-message">
+                </div>
+                <div class="input-group mb-3">
+                    {{ form_widget(form.password, {'attr': {'class': 'form-control block mt-1 w-full'}}) }}
+                    <br>
+                    <span class="input-group-text togglePassword" id="">
+                  <i data-feather="eye" style="cursor: pointer"></i>
+              </span>
+                </div>
+                <div style="margin-top: 0px">
+                    {{ form_errors(form.password) }}
+                </div>
+                <div class="input-group mb-3">
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control block mt-1 w-full'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                {{ form_row(form.submit) }}
+
+                {{ form_end(form) }}
+                {#                    <button class="btn btn-secondary" onclick="changePwdView()" type="button"> View/hide password #}
+                {#                    </button> #}
+            </div>
+        </form>
+    </div>
+    <br>
+    <script>
+        $("#register_username").keyup(function () {
+            let username = $(this).val().trim();
+            if (username !== '') {
+                $.ajax({
+                    url: 'http://localhost:8000/find-username/' + username,
+                    type: 'post',
+                    data: {username: username},
+                    success: function (response) {
+                        $("#username-message").html(response);
+                    }
+                });
+            }
+        });
+
+        feather.replace({'aria-hidden': 'true'});
+
+        $(".togglePassword").click(function (event) {
+            event.preventDefault();
+            let type = $(this).parent().parent().find("#register_password").attr("type");
+            if (type == "password") {
+                $("svg.feather.feather-eye").replaceWith(feather.icons["eye-off"].toSvg());
+                $(this).parent().parent().find("#register_password").attr("type", "text");
+            } else if (type == "text") {
+                $("svg.feather.feather-eye-off").replaceWith(feather.icons["eye"].toSvg());
+                $(this).parent().parent().find("#register_password").attr("type", "password");
+            }
+        });
+    </script>
+{% endblock %}

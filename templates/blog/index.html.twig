@@ -4,10 +4,55 @@
 
 {% block content %}
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.list-group').fadeIn(500);
+        });
+
+        $(document).ready(function () {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+        });
+
+        $(document).ready(function () {
+            let search =  $("#search");
+            search.keyup(function (event) {
+                event.stopPropagation();
+                let title = $(this).val().trim();
+                if (title !== '') {
+                    $.ajax({
+                        url: 'http://localhost:8000/blog/find-blogs/' + title,
+                        type: 'post',
+                        data: {title: title},
+                        success: function (response) {
+                            $("#dropdown").html(response);
+                            $('.dropdown-toggle').dropdown('show');
+                        }
+                    });
+                }
             });
+            search.on('input', function() {
+                let title = $(this).val().trim();
+
+                if (title === '') {
+                    $('.dropdown-menu').removeClass('show');
+                    console.log(title);
+                }
+            });
+        });
     </script>
+    <nav class="navbar navbar-light bg-lightgrey">
+        <div style="margin-left: 540px">
+            <form class="d-flex">
+                <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search" id="search">
+            </form>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" hidden>
+                    Dropdown
+                </button>
+                <ul class="dropdown-menu" id="dropdown"></ul>
+            </div>
+        </div>
+    </nav>
     <h1> Show Blogs </h1>
     <h2 style="font-size: 15px"> We have {{ postsAmount }} blogs on our site. </h2>
     <div class="container-fluid justify-content-start">
@@ -21,7 +66,8 @@
                                     <img src="{{ asset('uploads/images/' ~ blog.img) }}" class="card-img-top" alt="...">
                                 </div>
                             {% endif %}
-                            <a href="{{ path('blog_show', {'blog': blog.id}) }}"> {{ blog.title }} </a>
+                            <a href="{{ path('blog_show', {'blog': blog.id}) }}" data-bs-toggle="tooltip"
+                               data-bs-title="{{ blog.subtitle }}" data-bs-placement="right"> {{ blog.title }} </a>
                             <br>
                             {% if blog.comments|length == 1 %}
                                 ({{ blog.comments|length }} comment)
