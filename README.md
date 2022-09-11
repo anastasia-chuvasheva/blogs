@@ -18,6 +18,8 @@ Extra functionality includes: <br>
  <li>pop ups with subtitle content<br></li>
  <li>user registration page with validation, immidiate authorisation after registering, AJAX-based functionality to ensure that the username is available, password hashing and JQuery-based show/hide password eye icon button</li>
  <li>AJAX-based functionality to load comments in batches of two. If there aren't any comments, the button won't be shown</li>
+ <li>Event subscribers for assign a role to a user upon creation</li>
+ <li>Form post submit event subscribers for uniqueness checks</li>
   
 </ul>
 
