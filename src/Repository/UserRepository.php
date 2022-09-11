@@ -36,4 +36,29 @@ class UserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findOneUserByAnEmail(string $email): ?User
+    {
+        $qb = $this->createQueryBuilder('user')
+            ->where('user.email = :email')
+            ->setParameter('email', $email);
+
+        $query = $qb->getQuery();
+
+        return $query->getOneOrNullResult();
+
+    }
+
+
+    public function findOneUserByAUsername(string $username): ?User
+    {
+        $qb = $this->createQueryBuilder('user')
+            ->where('user.username = :username')
+            ->setParameter('username', $username);
+
+        $query = $qb->getQuery();
+
+        return $query->getOneOrNullResult();
+
+    }
 }

@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Entity\Role;
+use App\Event\UserCreatedEvent;
 use App\Form\RegisterType;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
@@ -37,7 +38,8 @@ class UserController extends AbstractController
         EntityManagerInterface      $entityManager,
         RoleRepository              $roleRepository,
         UserAuthenticatorInterface  $authenticatorManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        EventDispatcherInterface $eventDispatcher
     ): Response
     {
         $form = $this->createForm(RegisterType::class);
@@ -46,7 +48,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            $user->setRole($roleRepository->find(2));
+
             $plaintextPassword = $user->getPassword();
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
@@ -54,6 +56,9 @@ class UserController extends AbstractController
             );
 
             $user->setPassword($hashedPassword);
+
+            $event = new UserCreatedEvent($user);
+            $eventDispatcher->dispatch($event,  UserCreatedEvent::NAME);
             $entityManager->persist($user);
             $entityManager->flush();
             $authenticatorManager->authenticateUser($user, $this->authenticator, $request, [new RememberMeBadge()]);
